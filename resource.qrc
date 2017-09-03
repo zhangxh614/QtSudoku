@@ -1,4 +1,7 @@
 <RCC>
-    <qresource prefix="/image"/>
     <qresource prefix="/icon"/>
+    <qresource prefix="/bgm">
+        <file>bgm/click.wav</file>
+        <file>bgm/operate.wav</file>
+    </qresource>
 </RCC>

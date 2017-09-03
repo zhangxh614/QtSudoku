@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QUndoStack>
 #include <QComboBox>
+#include <QSound>
 
 class HomeWidget:public QWidget {
 
@@ -40,6 +41,7 @@ public:
     QWidget* bottomInputBar();
 
     int limit=10;
+    QSound *click,*operate;
     QVector<Button*> board;
     QStringList current;
     QUndoStack *m_UndoStack;
@@ -74,6 +76,7 @@ public:
 
     void setBoard(int level);
     void initBoard(QString* str);
+
 
 private:
     QWidget* topBar();

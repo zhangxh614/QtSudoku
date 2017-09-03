@@ -110,6 +110,8 @@ CalWidget::CalWidget(QWidget *parent):QWidget(parent) {
     this->setAutoFillBackground(true);
     this->setPalette(p);
 
+    click=new QSound(":/bgm/bgm/click.wav");
+    operate=new QSound(":/bgm/bgm/operate.wav");
 }
 
 QWidget* CalWidget::midBoard() {
@@ -230,8 +232,10 @@ QWidget* CalWidget::bottomInputBar() {
 
     btn[0].setText("Undo");
     connect(&btn[0],SIGNAL(clicked()),m_UndoStack,SLOT(undo()));
+    connect(&btn[0],SIGNAL(clicked()),operate,SLOT(play()));
     btn[1].setText("Redo");
     connect(&btn[1],SIGNAL(clicked()),m_UndoStack,SLOT(redo()));
+    connect(&btn[1],SIGNAL(clicked()),operate,SLOT(play()));
     btn[2].setText("Delete");
     connect(&btn[2],SIGNAL(clicked()),this,SLOT(del()));
 
@@ -256,6 +260,11 @@ QWidget* CalWidget::bottomInputBar() {
 }
 
 void CalWidget::updateBoard(int index, QString str) {
+    if(str.length()>1) {
+        board[index]->resetFont(15);
+    } else {
+        board[index]->resetFont(30);
+    }
     board[index]->setText(str);
 }
 
@@ -293,6 +302,7 @@ void CalWidget::clickBoard(int n) {
         board[n]->setChecked(true);
     }
     lightNumber(n);
+    click->play();
 }
 
 void CalWidget::del() {
@@ -301,6 +311,7 @@ void CalWidget::del() {
             if(board[i]->text()==0) break;
             m_UndoStack->push(new SudokuCommand(this,i,board[i]->text(),QString("")));
             board[i]->setText("");
+            current.replace(i,"");
             for(int i=0;i<board.length();i++) {
                 board[i]->setStyleSheet("");
             }
@@ -309,6 +320,7 @@ void CalWidget::del() {
             break;
         }
     }
+    operate->play();
 }
 
 PlayWidget::PlayWidget(QWidget *parent):CalWidget(parent) {
@@ -403,6 +415,7 @@ void PlayWidget::initBoard(QString *str) {
     for(int i=0;i<81;i++) {
         board[i]->setChecked(false);
         board[i]->setStyleSheet("");
+        board[i]->resetFont(30);
         if(str->at(i)=='0') {
             board[i]->setBaseColor(202,228,219,128,0,0);
             board[i]->setCheckable(true);
@@ -425,15 +438,18 @@ void PlayWidget::hint() {
         if(!logic->isRight(i,current.at(i))) {
             board[i]->setText(logic->get(i));
             board[i]->setStyleSheet("background-color:#dcae1d");
+            board[i]->resetFont(30);
             current.replace(i,board[i]->text());
             break;
         }
     }
     checkOK();
+    operate->play();
 }
 
 void PlayWidget::retry() {
     initBoard(initial);
+    operate->play();
 }
 
 void PlayWidget::digitClick(int n) {
@@ -453,6 +469,7 @@ void PlayWidget::digitClick(int n) {
         }
     }
     checkOK();
+    operate->play();
 }
 
 SolveWidget::SolveWidget(QWidget *parent):CalWidget(parent) {
@@ -522,11 +539,13 @@ void SolveWidget::initBoard() {
         board[i]->setBaseColor(202,228,219,0,0,0);
         board[i]->setCheckable(true);
         board[i]->setText("");
+        board[i]->resetFont(30);
         current.append("");
     }
 }
 void SolveWidget::retry() {
     initBoard();
+    operate->play();
 }
 
 void SolveWidget::hint() {
@@ -534,6 +553,7 @@ void SolveWidget::hint() {
     for(int i=0;i<81;i++) {
         board[i]->setText(a->at(i));
     }
+    operate->play();
 }
 
 void SolveWidget::digitClick(int n) {
@@ -553,6 +573,7 @@ void SolveWidget::digitClick(int n) {
             break;
         }
     }
+    operate->play();
 }
 
 WinWidget::WinWidget(QWidget *parent):QWidget(parent) {
