@@ -235,12 +235,12 @@ QWidget* CalWidget::bottomInputBar() {
     btn[2].setText("Delete");
     connect(&btn[2],SIGNAL(clicked()),this,SLOT(del()));
 
+    hintBtn.setText("Hint");
     hintBtn.setMinimumSize(size+5,size+5);
     hintBtn.setAlignment(Qt::AlignCenter);
     hintBtn.setStyleSheet("font-size:20px;background-color:#00303f;color:#ffffff");
     hintBtn.setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
     side->addWidget(&hintBtn,1,1);
-    hintBtn.setText("Hint");
 
     sideW->setLayout(side);
 
@@ -248,7 +248,7 @@ QWidget* CalWidget::bottomInputBar() {
     row->addWidget(sideW);
     row->addStretch();
     row->addWidget(input);
-    row->addSpacing(20);
+    row->addSpacing(30);
 
     w->setLayout(row);
 
@@ -315,6 +315,9 @@ PlayWidget::PlayWidget(QWidget *parent):CalWidget(parent) {
     QHBoxLayout *row=new QHBoxLayout;
     QVBoxLayout *col=new QVBoxLayout;
 
+    QWidget *w=new QWidget;
+    w->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
+
     col->addStretch();
     col->addWidget(topBar());
     col->addSpacing(10);
@@ -323,8 +326,10 @@ PlayWidget::PlayWidget(QWidget *parent):CalWidget(parent) {
     col->addWidget(bottomInputBar());
     col->addStretch();
 
+    w->setLayout(col);
+
     row->addStretch();
-    row->addLayout(col);
+    row->addWidget(w);
     row->addStretch();
 
     connect(&hintBtn,SIGNAL(clicked()),this,SLOT(hint()));
@@ -341,20 +346,36 @@ QWidget* PlayWidget::topBar() {
     QHBoxLayout *row=new QHBoxLayout;
 
     homeBtn.setMinimumSize(width,height);
-    //homeBtn.setStyleSheet("background-color:#003d3f;color:white");
+    //homeBtn.setStyleSheet("background-color:#003d3f;color:white"); 
+    homeBtn.setStyleSheet("color:white;background-color:#00303f;\
+                           border:2px groove #00303f;\
+                           border-radius:24px;\
+                           padding:2px 4px;\
+                           font-size:30px");
+
 
     Button* retry=new Button;
     retry->setMinimumSize(width,height);
     retry->setText("Retry");
     //retry->setStyleSheet("background-color:#003d3f;color:white");
+    retry->setStyleSheet("color:white;background-color:#00303f;\
+                           border:2px groove #00303f;\
+                           border-radius:24px;\
+                           padding:2px 4px;\
+                           font-size:30px");
     connect(retry,SIGNAL(clicked()),this,SLOT(retry()));
 
     pauseBtn.setMinimumSize(width,height);
     pauseBtn.setText("Pause");
     //pauseBtn.setStyleSheet("background-color:#003d3f;color:white");
+    pauseBtn.setStyleSheet("color:white;background-color:#00303f;\
+                           border:2px groove #00303f;\
+                           border-radius:24px;\
+                           padding:2px 4px;\
+                           font-size:30px");
 
     lcd.setMaximumSize(width,height);
-    lcd.setStyleSheet("font-size:30px;border:none;color:003d3f");
+    lcd.setStyleSheet("font-size:30px;border:none;color:00303f");
 
     row->addWidget(&homeBtn);
     row->addSpacing(10);
@@ -363,6 +384,7 @@ QWidget* PlayWidget::topBar() {
     row->addWidget(&pauseBtn);
     row->addStretch();
     row->addWidget(&lcd);
+    row->addSpacing(30);
 
     w->setLayout(row);
 
@@ -465,8 +487,26 @@ QWidget* SolveWidget::topBar() {
     QHBoxLayout *row=new QHBoxLayout;
 
     homeBtn.setMinimumSize(width,height);
+    homeBtn.setStyleSheet("color:white;background-color:#00303f;\
+                           border:2px groove #00303f;\
+                           border-radius:24px;\
+                           padding:2px 4px;\
+                           font-size:30px");
+
+    Button* retry=new Button;
+    retry->setMinimumSize(width,height);
+    retry->setText("Retry");
+    //retry->setStyleSheet("background-color:#003d3f;color:white");
+    retry->setStyleSheet("color:white;background-color:#00303f;\
+                           border:2px groove #00303f;\
+                           border-radius:24px;\
+                           padding:2px 4px;\
+                           font-size:30px");
+    connect(retry,SIGNAL(clicked()),this,SLOT(retry()));
 
     row->addWidget(&homeBtn);
+    row->addSpacing(10);
+    row->addWidget(retry);
     row->addStretch();
 
     w->setLayout(row);
@@ -484,6 +524,9 @@ void SolveWidget::initBoard() {
         board[i]->setText("");
         current.append("");
     }
+}
+void SolveWidget::retry() {
+    initBoard();
 }
 
 void SolveWidget::hint() {

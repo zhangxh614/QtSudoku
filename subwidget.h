@@ -99,6 +99,7 @@ private:
 private slots:
     void hint();
     void digitClick(int n);
+    void retry();
 };
 
 class WinWidget:public QWidget {
