@@ -1,6 +1,6 @@
 # QtSudoku
 
-
+By 计62 张子薇 2016011276
 
 ## 简介
 
@@ -39,12 +39,14 @@
     	│   └── operate.wav
     	├── button.cpp            //重载QLabel，增加类似QPushButton属性
     	├── button.h
+		├── doc                   //PDF文档
+    	│   └── README.pdf
     	├── main.cpp
-    	├── mainwindow.cpp        
+    	├── mainwindow.cpp
     	├── mainwindow.h
     	├── mainwindow.ui
     	├── README.md
-    	├── resource.qrc          //资源文件  
+    	├── resource.qrc          //资源文件
     	├── subwidget.cpp         //子窗口
     	├── subwidget.h
     	├── sudoku.cpp            //游戏逻辑，负责数独的产生，判定等
